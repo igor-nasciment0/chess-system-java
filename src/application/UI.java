@@ -25,10 +25,10 @@ public class UI {
 
 	private static void printPiece(ChessPiece piece) {
 		System.out.print(" ");
-		
+
 		if (piece == null)
 			System.out.print("-");
-		
+
 		else {
 			if (piece.getColor() == Color.WHITE)
 				System.out.print(TerminalColors.ANSI_WHITE + piece + TerminalColors.ANSI_RESET);
@@ -36,7 +36,7 @@ public class UI {
 				System.out.print(TerminalColors.ANSI_YELLOW + piece + TerminalColors.ANSI_RESET);
 		}
 	}
-	
+
 	public static ChessPosition readChessPosition(Scanner input) {
 		try {
 			String boardHouse = input.nextLine();
@@ -44,10 +44,14 @@ public class UI {
 			char column = boardHouse.charAt(0);
 			Integer row = Integer.parseInt(boardHouse.substring(1));
 
-			return new ChessPosition(column, row);	
+			return new ChessPosition(column, row);
 		} catch (RuntimeException e) {
 			throw new InputMismatchException("Invalid input position. Valid chess positions are a1 to h8.");
 		}
-		
+
+	}
+
+	public static void clearScreen() {
+		System.out.println(System.lineSeparator().repeat(10));
 	}
 }

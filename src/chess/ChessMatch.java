@@ -33,14 +33,19 @@ public class ChessMatch {
 	
 	public ChessPiece movePiece(ChessPosition sourceChessPosition, ChessPosition targetChessPosition) {
 		Position sourceBoardPosition = sourceChessPosition.toBoardPosition();
-		Position targetBoardPosition = targetChessPosition.toBoardPosition();
-		
-		if(!board.thereIsAPiece(sourceBoardPosition))
-			throw new ChessException("There is not a piece in source position: " + sourceChessPosition);
+		Position targetBoardPosition = targetChessPosition.toBoardPosition();	
 		
 		Piece capturedPiece = makeMove(sourceBoardPosition, targetBoardPosition);		
 		
 		return (ChessPiece) capturedPiece;
+	}
+	
+	private void validateSourcePosition(Position boardPosition, ChessPosition chessPosition) {
+		if(!board.thereIsAPiece(boardPosition))
+			throw new ChessException("There is not a piece in source position: " + chessPosition);
+
+		if(!board.getPiece(boardPosition).isThereAnyPossibleMove())
+			throw new ChessException("There is not any possible move for piece in " + chessPosition);
 	}
 	
 	private Piece makeMove(Position source, Position target) {		
