@@ -55,11 +55,19 @@ public class Board {
 		return piece;
 	}
 	
-	private boolean positionExists(int row, int column) {
+	public boolean positionExists(int row, int column) {
 		return row >= 0 && row < rows && column >= 0 && column < columns;
+	}
+	
+	public boolean positionExists(Position position) {
+		return positionExists(position.getRow(), position.getColumn());
 	}
 
 	public boolean thereIsAPiece(Position position) {
 		return getPiece(position) != null;
+	}
+	
+	public boolean thereIsAPiece(int row, int column) {
+		return getPiece(row, column) != null;
 	}
 }

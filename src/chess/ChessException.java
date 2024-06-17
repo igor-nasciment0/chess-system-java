@@ -3,7 +3,7 @@ package chess;
 public class ChessException extends RuntimeException {
 
 	public ChessException(String message) {
-		super("ChessException: " + message);
+		super("\nChessException: " + message);
 	}
 	
 	/**
