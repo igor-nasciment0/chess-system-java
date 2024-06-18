@@ -18,7 +18,7 @@ public abstract class ChessPiece extends Piece {
 	}	
 	
 	public boolean isThereOpponentPiece(int row, int column) {
-		ChessPiece oponnentPiece = (ChessPiece)(getBoard().getPiece(position));
+		ChessPiece oponnentPiece = (ChessPiece)(getBoard().getPiece(row, column));
 		
 		return oponnentPiece != null && oponnentPiece.getColor() != color;
 	}

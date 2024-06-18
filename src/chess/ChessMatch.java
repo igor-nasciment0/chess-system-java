@@ -27,6 +27,13 @@ public class ChessMatch {
 		return pieces;
 	}
 
+	public boolean[][] getPossibleMoves(ChessPosition sourcePosition) {
+		Position boardChessPosition = sourcePosition.toBoardPosition();
+		validateSourcePosition(boardChessPosition);
+		
+		return board.getPiece(boardChessPosition).getPossibleMoves();
+	}
+	
 	private void placeChessPiece(ChessPiece piece, char column, int row) {
 		board.placePiece(piece, new ChessPosition(column, row).toBoardPosition());
 	}
@@ -36,6 +43,7 @@ public class ChessMatch {
 		Position targetBoardPosition = targetChessPosition.toBoardPosition();
 
 		validateSourcePosition(sourceBoardPosition);
+		
 		validateTargetPosition(sourceBoardPosition, targetBoardPosition);
 
 		Piece capturedPiece = makeMove(sourceBoardPosition, targetBoardPosition);
@@ -67,7 +75,7 @@ public class ChessMatch {
 	}
 
 	private void initialSetup() {
-		placeChessPiece(new King(board, Color.WHITE), 'e', 1);
+		placeChessPiece(new King(board, Color.WHITE), 'b', 7);
 		placeChessPiece(new Rook(board, Color.WHITE), 'a', 1);
 		placeChessPiece(new Rook(board, Color.WHITE), 'h', 1);
 

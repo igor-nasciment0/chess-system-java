@@ -25,15 +25,15 @@ public class Rook extends ChessPiece {
 		AtomicInteger rookRow = new AtomicInteger(position.getRow());
 		AtomicInteger rookColumn = new AtomicInteger(position.getColumn());
 		
-		countMoves(rookRow, rookColumn, possibleMoves, () -> rookRow.addAndGet(1));
-		countMoves(rookRow, rookColumn, possibleMoves, () -> rookColumn.addAndGet(1));
-		countMoves(rookRow, rookColumn, possibleMoves, () -> rookRow.addAndGet(-1));
-		countMoves(rookRow, rookColumn, possibleMoves, () -> rookColumn.addAndGet(-1));
+		countPossibleMoves(rookRow, rookColumn, possibleMoves, () -> rookRow.set(rookRow.get() + 1)); // bottom
+		countPossibleMoves(rookRow, rookColumn, possibleMoves, () -> rookColumn.set(rookColumn.get() + 1)); // right
+		countPossibleMoves(rookRow, rookColumn, possibleMoves, () -> rookRow.set(rookRow.get() - 1)); // top
+		countPossibleMoves(rookRow, rookColumn, possibleMoves, () -> rookColumn.set(rookColumn.get() - 1)); // left
 
 		return possibleMoves;
 	}
 
-	private void countMoves(AtomicInteger row, AtomicInteger column, boolean[][] possibleMoves, Runnable callback) {
+	private void countPossibleMoves(AtomicInteger row, AtomicInteger column, boolean[][] possibleMoves, Runnable callback) {
 
 		int initialRow = row.get();
 		int initialColumn = column.get();
@@ -44,8 +44,10 @@ public class Rook extends ChessPiece {
 			if (!getBoard().positionExists(row.get(), column.get()))
 				break;
 
-			if (isThereOpponentPiece(row.get(), column.get()))
+			if (isThereOpponentPiece(row.get(), column.get())) {
+				possibleMoves[row.get()][column.get()] = true;
 				break;
+			}
 
 			if (getBoard().thereIsAPiece(row.get(), column.get())) {
 				possibleMoves[row.get()][column.get()] = false;
