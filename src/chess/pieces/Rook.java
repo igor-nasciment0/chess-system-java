@@ -3,14 +3,14 @@ package chess.pieces;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import board.Board;
-import board.Position;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
 public class Rook extends ChessPiece {
 
-	public Rook(Board board, Color color) {
-		super(board, color);
+	public Rook(Board board, Color color, ChessMatch match) {
+		super(board, color, match);
 	}
 
 	@Override

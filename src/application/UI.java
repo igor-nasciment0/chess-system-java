@@ -14,10 +14,13 @@ import chess.Color;
 public class UI {
 
 	public static void printMatch(ChessMatch match) {
-		printBoard(match.getPieces());
+		printBoard(match.getPiecesMatrix());
 		System.out.println();
 		
 		printCapturedPieces(match.getCapturedPieces());
+		
+		if(match.isInCheck())
+			System.out.println("CHECK!");
 		
 		System.out.println("Turn: " + match.getTurn());
 		System.out.println("Waiting player: " + match.getCurrentPlayer());

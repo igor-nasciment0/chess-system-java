@@ -1,0 +1,196 @@
+[1mdiff --git a/src/application/Program.java b/src/application/Program.java[m
+[1mindex 867a976..42b929c 100644[m
+[1m--- a/src/application/Program.java[m
+[1m+++ b/src/application/Program.java[m
+[36m@@ -28,7 +28,7 @@[m [mpublic class Program {[m
+ 		while (true) {[m
+ 			try {[m
+ 				UI.clearScreen();[m
+[31m-				UI.printMatch(match);[m
+[32m+[m				[32mUI.printBoard(match.getPieces());[m
+ 				[m
+ 				System.out.print("Source: ");				[m
+ 				ChessPosition source = UI.readChessPosition(input);[m
+[1mdiff --git a/src/application/UI.java b/src/application/UI.java[m
+[1mindex eeaaa4a..12b7d71 100644[m
+[1m--- a/src/application/UI.java[m
+[1m+++ b/src/application/UI.java[m
+[36m@@ -1,28 +1,14 @@[m
+ package application;[m
+ [m
+[31m-import java.util.Arrays;[m
+ import java.util.InputMismatchException;[m
+[31m-import java.util.List;[m
+ import java.util.Scanner;[m
+ [m
+[31m-import board.Piece;[m
+[31m-import chess.ChessMatch;[m
+ import chess.ChessPiece;[m
+ import chess.ChessPosition;[m
+ import chess.Color;[m
+ [m
+ public class UI {[m
+ [m
+[31m-	public static void printMatch(ChessMatch match) {[m
+[31m-		printBoard(match.getPieces());[m
+[31m-		System.out.println();[m
+[31m-		[m
+[31m-		printCapturedPieces(match.getCapturedPieces());[m
+[31m-		[m
+[31m-		System.out.println("Turn: " + match.getTurn());[m
+[31m-		System.out.println("Waiting player: " + match.getCurrentPlayer());[m
+[31m-	}[m
+[31m-[m
+ 	public static void printBoard(ChessPiece[][] pieces) {[m
+ 		for (int i = 0; i < pieces.length; i++) {[m
+ 			System.out.print(8 - i);[m
+[36m@@ -53,8 +39,8 @@[m [mpublic class UI {[m
+ [m
+ 	private static void printPiece(ChessPiece piece, boolean isPossibleMove) {[m
+ 		System.out.print(" ");[m
+[31m-[m
+[31m-		if (isPossibleMove)[m
+[32m+[m[41m		[m
+[32m+[m		[32mif(isPossibleMove)[m
+ 			System.out.print(TerminalColors.ANSI_BLUE_BACKGROUND);[m
+ [m
+ 		if (piece == null)[m
+[36m@@ -68,28 +54,6 @@[m [mpublic class UI {[m
+ 		}[m
+ 	}[m
+ [m
+[31m-	private static void printCapturedPieces(List<Piece> capturedPieces) {[m
+[31m-		List<Piece> capturedWhitePieces = capturedPieces.stream()[m
+[31m-				.filter(piece -> ((ChessPiece) piece).getColor() == Color.WHITE).toList();[m
+[31m-		[m
+[31m-		List<Piece> capturedBlackPieces = capturedPieces.stream()[m
+[31m-				.filter(piece -> ((ChessPiece) piece).getColor() == Color.BLACK).toList();[m
+[31m-		[m
+[31m-		System.out.println("Captured Pieces: ");[m
+[31m-		[m
+[31m-		System.out.print("White: ");[m
+[31m-		System.out.print(TerminalColors.ANSI_WHITE);[m
+[31m-		System.out.println(Arrays.toString(capturedWhitePieces.toArray()));[m
+[31m-		[m
+[31m-		System.out.print(TerminalColors.ANSI_RESET);[m
+[31m-		[m
+[31m-		System.out.print("Black: ");[m
+[31m-		System.out.print(TerminalColors.ANSI_YELLOW);[m
+[31m-		System.out.println(Arrays.toString(capturedBlackPieces.toArray()));[m
+[31m-		[m
+[31m-		System.out.println(TerminalColors.ANSI_RESET);[m
+[31m-	}[m
+[31m-[m
+ 	public static ChessPosition readChessPosition(Scanner input) {[m
+ 		try {[m
+ 			String boardHouse = input.nextLine();[m
+[1mdiff --git a/src/chess/ChessMatch.java b/src/chess/ChessMatch.java[m
+[1mindex 4d33a41..164a51e 100644[m
+[1m--- a/src/chess/ChessMatch.java[m
+[1m+++ b/src/chess/ChessMatch.java[m
+[36m@@ -1,7 +1,5 @@[m
+ package chess;[m
+ [m
+[31m-import java.util.ArrayList;[m
+[31m-[m
+ import board.Board;[m
+ import board.Piece;[m
+ import board.Position;[m
+[36m@@ -11,30 +9,12 @@[m [mimport chess.pieces.Rook;[m
+ public class ChessMatch {[m
+ [m
+ 	private Board board;[m
+[31m-	private Color currentPlayer;[m
+[31m-	private int turn;[m
+[31m-	[m
+[31m-	private ArrayList<Piece> capturedPieces = new ArrayList<>();[m
+[31m-	[m
+[32m+[m
+ 	public ChessMatch() {[m
+ 		board = new Board(8, 8);[m
+[31m-		currentPlayer = Color.WHITE;[m
+[31m-		turn = 1;[m
+ 		initialSetup();[m
+ 	}[m
+ [m
+[31m-	public Color getCurrentPlayer() {[m
+[31m-		return currentPlayer;[m
+[31m-	}[m
+[31m-[m
+[31m-	public int getTurn() {[m
+[31m-		return turn;[m
+[31m-	}[m
+[31m-	[m
+[31m-	public ArrayList<Piece> getCapturedPieces() {[m
+[31m-		return capturedPieces;[m
+[31m-	}[m
+[31m-[m
+ 	public ChessPiece[][] getPieces() {[m
+ 		ChessPiece[][] pieces = new ChessPiece[board.getRows()][board.getColumns()];[m
+ [m
+[36m@@ -50,10 +30,10 @@[m [mpublic class ChessMatch {[m
+ 	public boolean[][] getPossibleMoves(ChessPosition sourcePosition) {[m
+ 		Position boardChessPosition = sourcePosition.toBoardPosition();[m
+ 		validateSourcePosition(boardChessPosition);[m
+[31m-[m
+[32m+[m[41m		[m
+ 		return board.getPiece(boardChessPosition).getPossibleMoves();[m
+ 	}[m
+[31m-[m
+[32m+[m[41m	[m
+ 	private void placeChessPiece(ChessPiece piece, char column, int row) {[m
+ 		board.placePiece(piece, new ChessPosition(column, row).toBoardPosition());[m
+ 	}[m
+[36m@@ -63,13 +43,11 @@[m [mpublic class ChessMatch {[m
+ 		Position targetBoardPosition = targetChessPosition.toBoardPosition();[m
+ [m
+ 		validateSourcePosition(sourceBoardPosition);[m
+[31m-[m
+[32m+[m[41m		[m
+ 		validateTargetPosition(sourceBoardPosition, targetBoardPosition);[m
+ [m
+ 		Piece capturedPiece = makeMove(sourceBoardPosition, targetBoardPosition);[m
+ [m
+[31m-		nextTurn();[m
+[31m-[m
+ 		return (ChessPiece) capturedPiece;[m
+ 	}[m
+ [m
+[36m@@ -78,11 +56,6 @@[m [mpublic class ChessMatch {[m
+ 			throw new ChessException([m
+ 					"There is not a piece in source position: " + ChessPosition.fromBoardPosition(sourcePosition));[m
+ [m
+[31m-		Color pieceColor = ((ChessPiece) board.getPiece(sourcePosition)).getColor();[m
+[31m-[m
+[31m-		if (pieceColor != currentPlayer)[m
+[31m-			throw new ChessException("Enemy piece selected. Current turn: " + currentPlayer);[m
+[31m-[m
+ 		if (!board.getPiece(sourcePosition).isThereAnyPossibleMove())[m
+ 			throw new ChessException([m
+ 					"There is not any possible move for piece in " + ChessPosition.fromBoardPosition(sourcePosition));[m
+[36m@@ -94,25 +67,10 @@[m [mpublic class ChessMatch {[m
+ [m
+ 	}[m
+ [m
+[31m-	private void nextTurn() {[m
+[31m-		if (currentPlayer == Color.WHITE) {[m
+[31m-			currentPlayer = Color.BLACK;[m
+[31m-[m
+[31m-		} else {[m
+[31m-			currentPlayer = Color.WHITE;[m
+[31m-			turn++;[m
+[31m-		}[m
+[31m-	}[m
+[31m-[m
+ 	private Piece makeMove(Position source, Position target) {[m
+ 		Piece movingPiece = board.removePiece(source);[m
+ 		Piece capturedPiece = board.removePiece(target);[m
+[31m-		[m
+ 		board.placePiece(movingPiece, target);[m
+[31m-		[m
+[31m-		if(capturedPiece != null)[m
+[31m-			capturedPieces.add(capturedPiece);[m
+[31m-		[m
+ 		return capturedPiece;[m
+ 	}[m
+ [m

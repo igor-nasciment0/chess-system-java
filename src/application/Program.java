@@ -33,7 +33,7 @@ public class Program {
 				System.out.print("Source: ");				
 				ChessPosition source = UI.readChessPosition(input);
 				UI.clearScreen();
-				UI.printBoard(match.getPieces(), match.getPossibleMoves(source));
+				UI.printBoard(match.getPiecesMatrix(), match.getPossibleMoves(source));
 				
 				System.out.print("Target: ");
 				ChessPosition target = UI.readChessPosition(input);
